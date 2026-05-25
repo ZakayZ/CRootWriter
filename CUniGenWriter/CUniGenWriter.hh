@@ -1,57 +1,59 @@
 /**
-* CRoot - COLA Library Module for ROOT data storage support.
-* Copyright (C) 2025 Savva Savenkov
-*
-* This file is part of CRoot
-*
-* CRoot is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* CRoot is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * CRoot - COLA Library Module for ROOT data storage support.
+ * Copyright (C) 2025-2026 Savva Savenkov
+ *
+ * This file is part of CRoot
+ *
+ * CRoot is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CRoot is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with CRoot.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 #ifndef CROOT_CUNIGENWRITER_HH
 #define CROOT_CUNIGENWRITER_HH
 
-#include <utility>
-
 #include "CRootWriter.hh"
-
-#include "URun.hh"
+#include "Riostream.h"
+#include "TFile.h"
+#include "TTree.h"
 #include "UEvent.hh"
 #include "UParticle.hh"
+#include "URun.hh"
 
-#include "COLA.hh"
-#include "Riostream.h"
-#include "TTree.h"
-#include "TFile.h"
+#include <COLA.hh>
 
-class CUniGenWriter final: public CRootWriter {
-private:
-    std::unique_ptr<UEvent> curEvent;
-    std::unique_ptr<URun> run;
-    bool _writeCoord;
+#include <utility>
 
-    bool _runFilled;
-    TTree* outputTree;                      // only view to single map element
+namespace cola {
 
-    void write_event(std::unique_ptr<cola::EventData>&&) final;
+  class CUniGenWriter final : public CRootWriter {
+   private:
+    std::unique_ptr<UEvent> cur_event_;
+    std::unique_ptr<URun> run_;
+    bool write_coord_;
 
-public:
+    bool run_filled_;
+    TTree* output_tree_;  // only view to single map element
+
+    void WriteEvent(std::unique_ptr<EventData>&& /*unused*/) final;
+
+   public:
     CUniGenWriter() = delete;
     CUniGenWriter(const CUniGenWriter&) = delete;
     CUniGenWriter(CUniGenWriter&&) = delete;
     CUniGenWriter& operator=(const CUniGenWriter&) = delete;
     CUniGenWriter& operator=(CUniGenWriter&&) = delete;
-    CUniGenWriter(const std::string& fName, const size_t buffSize, bool writeCoord = false);
+    CUniGenWriter(const std::string& f_name, size_t buff_size, bool write_coord = false);
+  };
+}  // namespace cola
 
-};
-#endif //CROOT_CUNIGENWRITER_HH
+#endif  // CROOT_CUNIGENWRITER_HH

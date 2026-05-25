@@ -1,6 +1,8 @@
 @PACKAGE_INIT@
 
-find_package(COLA REQUIRED)
-find_package(ROOT REQUIRED)
+include(CMakeFindDependencyMacro)
 
-include(@CMAKE_INSTALL_PREFIX@/lib/cmake/@COLA_MODULE_NAME@/@COLA_MODULE_NAME@Export.cmake)
+find_dependency(COLA REQUIRED)
+find_dependency(ROOT REQUIRED)
+
+include(@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_LIBDIR@/cmake/@COLA_MODULE_NAME@/@COLA_MODULE_NAME@Export.cmake)
